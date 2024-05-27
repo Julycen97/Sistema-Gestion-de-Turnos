@@ -11,7 +11,7 @@ namespace Dominio
     {
         public Categoria()
         {
-            this.Nombre = "No Categoria";
+            this.Nombre = "No Categori";
             this.Descripcion = "No Descripcion";
         }
 
