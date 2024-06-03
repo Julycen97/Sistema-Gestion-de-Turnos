@@ -104,7 +104,7 @@ namespace Negocio
 
                     persona.ModificarPersona(auxiliar);
 
-                    this.accesoDatos.SetearComando("UPDATE PACIENTE SET FECHAAFILIACION = @FECHAAFILIACION, COBERTURA = @COBERTURA WHERE  NUMPACIENTE = @NUMPACIENTE");
+                    this.accesoDatos.SetearComando("UPDATE PACIENTE SET FECHAAFILIACION = @FECHAAFILIACION, COBERTURA = @COBERTURA WHERE NUMPACIENTE = @NUMPACIENTE");
                     this.accesoDatos.SetearParametro("@FECHAAFILIACION", paciente.FechaAfiliacion);
                     this.accesoDatos.SetearParametro("@COBERTURA", paciente.Cobertura);
                     this.accesoDatos.SetearParametro("@NUMPACIENTE", paciente.NumPaciente);
