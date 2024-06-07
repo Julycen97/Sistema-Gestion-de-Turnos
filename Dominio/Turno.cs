@@ -46,7 +46,7 @@ namespace Dominio
         {
             StringBuilder retorno = new StringBuilder();
 
-            retorno.Append("DETALLE DEL TURNO\n");
+            retorno.Append("        DETALLE DEL TURNO\n");
             retorno.Append("Numero de Turno:        " + this.IDTurno + "\n");
             retorno.Append("   DATOS DEL PACIENTE\n" + this.Datos.ToString());
             retorno.Append("Fecha y Hora del Turno: " + this.FechaHoraTurno.ToString() + "\n");

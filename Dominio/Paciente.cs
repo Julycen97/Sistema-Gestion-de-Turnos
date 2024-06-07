@@ -41,6 +41,9 @@ namespace Dominio
             StringBuilder retorno = new StringBuilder();
 
             retorno.Append("    DATOS DEL PACIENTE\n");
+            retorno.Append("Numero de Paciente:  " + this.NumPaciente + "\n");
+            retorno.Append("Fecha de Afiliacion: " + this.FechaAfiliacion.ToString() + "\n");
+            retorno.Append("Cobertura:           " + this.Cobertura + "\n");
             //CHUSMEAR
             retorno.Append(base.ToString());
 

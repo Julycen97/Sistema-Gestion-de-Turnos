@@ -24,7 +24,7 @@ namespace Negocio
 
             try
             {
-                this.accesoDatos.SetearComando("SELECT NUMMATRICULA, IDPERSONA, IDESPECIALIDAD FROM MEDICOS");
+                this.accesoDatos.SetearComando("SELECT NUMMATRICULA, IDPERSONA, IDESPECIALIDAD, ESTADO FROM MEDICOS");
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (this.accesoDatos.getLector.Read())
@@ -35,6 +35,8 @@ namespace Negocio
                     auxiliar.NumMatricula = this.accesoDatos.getLector["NUMMATRICULA"] is DBNull ? 0: (int)this.accesoDatos.getLector["NUMMATRICULA"];
                     
                     auxiliar.Area = espNeg.ObtenerEspecialidad((int)this.accesoDatos.getLector["NUMMATRICULA"]);
+                    auxiliar.Estado = (bool)this.accesoDatos.getLector["ESTADO"];
+
                     cargaDatos = perNeg.ObtenerPersona((int)this.accesoDatos.getLector["IDPERSONA"]);
 
                     auxiliar.Nombre = cargaDatos.Nombre;
@@ -149,6 +151,32 @@ namespace Negocio
                 catch (Exception ex)
                 {
                     throw ex;
+                }
+            }
+
+            return false;
+        }
+
+        public bool BajaMedico(Medico medico)
+        {
+            if (this.VerificarMedico(medico.NumMatricula))
+            {
+                try
+                {
+                    this.accesoDatos.SetearComando("UPDATE MEDICOS SET ESTADO = 0 WHERE NUMMATRICULA = @NUMMATRICULA");
+                    this.accesoDatos.SetearParametro("@NUMMATRICULA", medico.NumMatricula);
+
+                    this.accesoDatos.AbrirConexionEjecutarAccion();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally
+                {
+                    this.accesoDatos.CerrarConexion();
                 }
             }
 

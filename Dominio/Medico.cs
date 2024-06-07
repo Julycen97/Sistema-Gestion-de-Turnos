@@ -13,6 +13,7 @@ namespace Dominio
         {
             this.NumMatricula = 0;
             this.Area = new Especialidad();
+            this.Estado = true;
         }
 
         public Medico(Persona Datos, int NumMatricula, Especialidad Area)
@@ -23,24 +24,26 @@ namespace Dominio
             this.Direccion = Datos.Direccion;
             this.Sexo = Datos.Sexo;
             this.FechaNacimiento = Datos.FechaNacimiento;
+
             this.NumMatricula = NumMatricula;
             this.Area = Area;
+            this.Estado = true;
         }
 
         [DisplayName ("Numero de Matricula")]
         public int NumMatricula { get; set; }
         public Especialidad Area { get; set; }
+        public bool Estado { get; set; }
 
         public override string ToString()
         {
             StringBuilder retorno = new StringBuilder();
 
             retorno.Append("    DATOS DE MEDICO\n");
-            //CHUSMEAR
-            retorno.Append(base.ToString());
             retorno.Append("Numero de Matricula: " + this.NumMatricula + "\n");
             retorno.Append(Area.ToString());
-            
+            //CHUSMEAR
+            retorno.Append(base.ToString());
 
             return base.ToString();
         }
