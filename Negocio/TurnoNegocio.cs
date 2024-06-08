@@ -21,7 +21,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando("SELECT IDTURNO, IDPACIENTE, FECHAHORATURNO, IDESPECIALIDAD, MATRICULAMEDICO, IDCATTURNO FROM TURNOS");
+                this.accesoDatos.SetearComando("SELECT IDTURNO, NUMPACIENTE, FECHAHORATURNO, IDESPECIALIDAD, MATRICULAMEDICO, IDCATTURNO FROM TURNOS");
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (this.accesoDatos.getLector.Read())

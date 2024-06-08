@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Web;
+using System.Web.ApplicationServices;
 
 namespace Negocio
 {
@@ -11,6 +12,11 @@ namespace Negocio
     {
         private List<Paciente> listaPacientes;
         private AccesoDatos accesoDatos;
+
+        private const string select = "SELECT NUMPACIENTE, DNIPERSONA, FECHAAFILIACION, IDCOBERTURA FROM PACIENTES";
+        private const string update = "UPDATE PACIENTES SET FECHAAFILIACION = @FECHAAFILIACION, IDCOBERTURA = @IDCOBERTURA WHERE NUMPACIENTE = @NUMPACIENTE";
+        private const string delete = "DELETE PACIENTES WHERE NUMPACIENTE = @NUMPACIENTE";
+        private const string insert = "INSERT INTO PACIENTES (DNIPERSONA, FECHAAFILIACION, IDCOBERTURA) VALUES (@DNIPERSONA, @FECHAAFILIACION, @IDCOBERTURA)";
 
         public PacienteNegocio()
         {
@@ -21,10 +27,11 @@ namespace Negocio
         public List<Paciente> ObtenerPacientes()
         {
             PersonaNegocio persona = new PersonaNegocio();
+            CoberturaNegocio cobertura = new CoberturaNegocio();
 
             try
             {
-                this.accesoDatos.SetearComando("SELECT NUMPACIENTE, IDPERSONA, FECHAAFILIACION, COBERTURA FROM PACIENTES");
+                this.accesoDatos.SetearComando(select);
 
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
@@ -33,11 +40,11 @@ namespace Negocio
                     Paciente auxiliar = new Paciente();
                     Persona cargaDatos = new Persona();
 
-                    cargaDatos = persona.ObtenerPersona((int)this.accesoDatos.getLector["IDPERSONA"]);
+                    cargaDatos = persona.ObtenerPersona((int)this.accesoDatos.getLector["DNIPERSONA"]);
+                    auxiliar.Cobertura = cobertura.ObtenerCobertura((int)this.accesoDatos.getLector["IDCOBERTURA"]);
 
                     auxiliar.NumPaciente = this.accesoDatos.getLector["NUMPACIENTE"] is DBNull ? 0 : (int)this.accesoDatos.getLector["NUMPACIENTE"];
                     auxiliar.FechaAfiliacion = this.accesoDatos.getLector["FECHAAFILIACION"] is DBNull ? new DateTime(1, 1, 1900) : (DateTime)this.accesoDatos.getLector["FECHAAFILIACION"];
-                    auxiliar.Cobertura = this.accesoDatos.getLector["COBERTURA"] is DBNull ? "No Cobertura" : (string)this.accesoDatos.getLector["COBERTURA"];
 
                     auxiliar.Nombre = cargaDatos.Nombre;
                     auxiliar.Apellido = cargaDatos.Apellido;
@@ -104,9 +111,9 @@ namespace Negocio
 
                     persona.ModificarPersona(auxiliar);
 
-                    this.accesoDatos.SetearComando("UPDATE PACIENTE SET FECHAAFILIACION = @FECHAAFILIACION, COBERTURA = @COBERTURA WHERE NUMPACIENTE = @NUMPACIENTE");
+                    this.accesoDatos.SetearComando(update);
                     this.accesoDatos.SetearParametro("@FECHAAFILIACION", paciente.FechaAfiliacion);
-                    this.accesoDatos.SetearParametro("@COBERTURA", paciente.Cobertura);
+                    this.accesoDatos.SetearParametro("@IDCOBERTURA", paciente.Cobertura.IDCobertura);
                     this.accesoDatos.SetearParametro("@NUMPACIENTE", paciente.NumPaciente);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -135,7 +142,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando("DELETE PACIENTES WHERE NUMPACIENTE = @NUMPACIENTE");
+                    this.accesoDatos.SetearComando(delete);
                     this.accesoDatos.SetearParametro("@NUMPACIENTE", paciente.NumPaciente);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -177,10 +184,10 @@ namespace Negocio
 
                 persona.AgregarPersona(auxiliar);
 
-                this.accesoDatos.SetearComando("INSERT INTO PACIENTES (IDPERSONA, FECHAAFILIACION, COBERTURA) VALUES (@IDPERSONA, @FECHAAFILIACION, @COBERTURA)");
+                this.accesoDatos.SetearComando(insert);
                 this.accesoDatos.SetearParametro("@IDPERSONA", paciente.DNI);
                 this.accesoDatos.SetearParametro("@FECHAAFILIACION", paciente.FechaAfiliacion);
-                this.accesoDatos.SetearParametro("@COBERTURA", paciente.Cobertura);
+                this.accesoDatos.SetearParametro("@IDCOBERTURA", paciente.Cobertura.IDCobertura);
 
                 this.accesoDatos.AbrirConexionEjecutarAccion();
 

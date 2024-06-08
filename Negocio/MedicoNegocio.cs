@@ -11,6 +11,12 @@ namespace Negocio
         private List<Medico> listaMedicos;
         private AccesoDatos accesoDatos;
 
+        private const string select = "SELECT NUMMATRICULA, DNIPERSONA, IDESPECIALIDAD, ESTADO FROM MEDICOS";
+        private const string update = "UPDATE MEDICOS SET IDESPECIALIDAD = @IDESPECIALIDAD WHERE NUMMATRICULA = @NUMMATRICULA";
+        private const string setStatus = "UPDATE MEDICOS SET ESTADO = 0 WHERE NUMMATRICULA = @NUMMATRICULA";
+        private const string delete = "DELETE MEDICOS WHERE NUMMATRICULA = @NUMMATRICULA";
+        private const string insert = "INSERT INTO MEDICOS (NUMMATRICULA, DNIPERSONA, IDESPECIALIDAD, ESTADO) VALUES (@NUMMATRICULA, @DNIPERSONA, @IDESPECIALIDAD, @ESTADO)";
+
         public MedicoNegocio() 
         {
             this.listaMedicos = new List<Medico>();
@@ -24,7 +30,7 @@ namespace Negocio
 
             try
             {
-                this.accesoDatos.SetearComando("SELECT NUMMATRICULA, IDPERSONA, IDESPECIALIDAD, ESTADO FROM MEDICOS");
+                this.accesoDatos.SetearComando(select);
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (this.accesoDatos.getLector.Read())
@@ -32,12 +38,12 @@ namespace Negocio
                     Persona cargaDatos = new Persona();
                     Medico auxiliar = new Medico();
 
-                    auxiliar.NumMatricula = this.accesoDatos.getLector["NUMMATRICULA"] is DBNull ? 0: (int)this.accesoDatos.getLector["NUMMATRICULA"];
+                    auxiliar.Area = espNeg.ObtenerEspecialidad((int)this.accesoDatos.getLector["IDESPECIALIDAD"]);
+                    cargaDatos = perNeg.ObtenerPersona((int)this.accesoDatos.getLector["IDPERSONA"]);
                     
-                    auxiliar.Area = espNeg.ObtenerEspecialidad((int)this.accesoDatos.getLector["NUMMATRICULA"]);
+                    auxiliar.NumMatricula = this.accesoDatos.getLector["NUMMATRICULA"] is DBNull ? 0: (int)this.accesoDatos.getLector["NUMMATRICULA"];
                     auxiliar.Estado = (bool)this.accesoDatos.getLector["ESTADO"];
 
-                    cargaDatos = perNeg.ObtenerPersona((int)this.accesoDatos.getLector["IDPERSONA"]);
 
                     auxiliar.Nombre = cargaDatos.Nombre;
                     auxiliar.Apellido = cargaDatos.Apellido;
@@ -100,10 +106,9 @@ namespace Negocio
 
                     persona.ModificarPersona(auxiliar);
 
-                    this.accesoDatos.SetearComando("UPDATE MEDICOS SET NUMMATRICULA = @NUMATRICULA, IDESPECIALIDAD = @IDESPECIALIDAD WHERE NUMMATRICULA = @MATRICULA");
-                    this.accesoDatos.SetearParametro("@NUMMATRICULA", medico.NumMatricula);
+                    this.accesoDatos.SetearComando(update);
                     this.accesoDatos.SetearParametro("@IDESPECIALIDAD", medico.Area.IDEspecialidad);
-                    this.accesoDatos.SetearParametro("@MATRICULA", medico.NumMatricula);
+                    this.accesoDatos.SetearParametro("@NUMMATRICULA", medico.NumMatricula);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
 
@@ -131,7 +136,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando("DELETE MEDICOS WHERE NUMMATRICULA = @NUMMATRICULA");
+                    this.accesoDatos.SetearComando(delete);
                     this.accesoDatos.SetearParametro("@NUMMATRICULA", medico.NumMatricula);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -163,7 +168,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando("UPDATE MEDICOS SET ESTADO = 0 WHERE NUMMATRICULA = @NUMMATRICULA");
+                    this.accesoDatos.SetearComando(setStatus);
                     this.accesoDatos.SetearParametro("@NUMMATRICULA", medico.NumMatricula);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -199,10 +204,11 @@ namespace Negocio
 
                 persona.AgregarPersona(auxiliar);
 
-                this.accesoDatos.SetearComando("INSERT INTO MEDICOS (NUMMATRICULA, IDPERSONA, IDESPECIALIDAD) VALUES (@NUMMATRICULA, @IDPERSONA, @IDESPECIALIDAD)");
+                this.accesoDatos.SetearComando(insert);
                 this.accesoDatos.SetearParametro("@NUMMATRICULA", medico.NumMatricula);
-                this.accesoDatos.SetearParametro("@IDPERSONA", auxiliar.DNI);
+                this.accesoDatos.SetearParametro("@DNIPERSONA", auxiliar.DNI);
                 this.accesoDatos.SetearParametro("@IDESPECIALIDAD", medico.Area.IDEspecialidad);
+                this.accesoDatos.SetearParametro("@ESTADO", 1);
 
                 this.accesoDatos.AbrirConexionEjecutarAccion();
 

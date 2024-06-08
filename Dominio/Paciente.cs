@@ -13,10 +13,10 @@ namespace Dominio
         {
             this.NumPaciente = 0;
             this.FechaAfiliacion = new DateTime(1, 1, 1900);
-            this.Cobertura = "No Cobertura";
+            this.Cobertura = new Cobertura();
         }
 
-        public Paciente(Persona datosPers, int NumPaciente, DateTime FechaAfiliacion, string Cobertura)
+        public Paciente(Persona datosPers, int NumPaciente, DateTime FechaAfiliacion, Cobertura Cobertura)
         {
             this.Nombre = datosPers.Nombre;
             this.Apellido = datosPers.Apellido;
@@ -34,7 +34,7 @@ namespace Dominio
         public int NumPaciente { get; set; }
         [DisplayName ("Fecha de Afiliacion")]
         public DateTime FechaAfiliacion { get; set; }
-        public string Cobertura { get; set; }
+        public Cobertura Cobertura { get; set; }
 
         public override string ToString()
         {
@@ -43,7 +43,7 @@ namespace Dominio
             retorno.Append("    DATOS DEL PACIENTE\n");
             retorno.Append("Numero de Paciente:  " + this.NumPaciente + "\n");
             retorno.Append("Fecha de Afiliacion: " + this.FechaAfiliacion.ToString() + "\n");
-            retorno.Append("Cobertura:           " + this.Cobertura + "\n");
+            retorno.Append("Cobertura:           " + this.Cobertura.Nombre + "\n");
             //CHUSMEAR
             retorno.Append(base.ToString());
 

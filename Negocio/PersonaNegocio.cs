@@ -11,6 +11,11 @@ namespace Negocio
         private List<Persona> listaPersonas;
         private AccesoDatos accesoDatos;
 
+        private const string select = "SELECT DNI, NOMBRE, APELLIDO, SEXO, FECHANACIMIENTO, IDDOMICILIO FROM PERSONAS";
+        private const string update = "UPDATE PERSONAS SET NOMBRE = @NOMBRE, APELLIDO = @APELLIDO, SEXO = @SEXO, FECHANACIMIENTO = @FECHANACIMIENTO WHERE DNI = @DNI";
+        private const string insert = "INSERT INTO PERSONAS (DNI, NOMBRE, APELLIDO, SEXO, FECHANACIMIENTO, IDDOMICILIO) VALUES (@DNI, @NOMBRE, @APELLIDO, @SEXO, @FECHANACIMIENTO, @IDDOMICILIO)";
+        private const string delete = "DELETE PERSONA WHERE DNI = @DNI";
+
         public PersonaNegocio()
         {
             this.listaPersonas = new List<Persona>();
@@ -21,7 +26,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando("SELECT NOMBRE, APELLIDO, DNI, IDDOMICILIO, SEXO, FECHANAC FROM PERSONAS");
+                this.accesoDatos.SetearComando(select);
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (accesoDatos.getLector.Read())
@@ -29,14 +34,13 @@ namespace Negocio
                     Persona auxiliar = new Persona();
                     DomicilioNegocio auxDomiNeg = new DomicilioNegocio();
 
+                    auxiliar.DNI = this.accesoDatos.getLector["DNI"] is DBNull ? 0 : (int)this.accesoDatos.getLector["DNI"];
                     auxiliar.Nombre = this.accesoDatos.getLector["NOMBRE"] is DBNull ? string.Empty : (string)this.accesoDatos.getLector["NOMBRE"];
                     auxiliar.Apellido = this.accesoDatos.getLector["APELLIDO"] is DBNull ? string.Empty : (string)this.accesoDatos.getLector["APELLIDO"];
-                    auxiliar.DNI = this.accesoDatos.getLector["DNI"] is DBNull ? 0 : (int)this.accesoDatos.getLector["DNI"];
-                    auxiliar.Direccion.IDDomicilio = this.accesoDatos.getLector["IDDOMICILIO"] is DBNull ? 0 : (int)this.accesoDatos.getLector["IDDOMICILIO"];
                     auxiliar.Sexo = this.accesoDatos.getLector["SEXO"] is DBNull ? string.Empty : (string)this.accesoDatos.getLector["SEXO"];
-                    auxiliar.FechaNacimiento = this.accesoDatos.getLector["FECHANAC"] is DBNull ? new DateTime(1,1,1900) : (DateTime)this.accesoDatos.getLector["FECHANAC"];
+                    auxiliar.FechaNacimiento = this.accesoDatos.getLector["FECHANACIMIENTO"] is DBNull ? new DateTime(1,1,1900) : (DateTime)this.accesoDatos.getLector["FECHANACIMIENTO"];
 
-                    auxiliar.Direccion = auxDomiNeg.ObtenerDomicilio(auxiliar.Direccion.IDDomicilio);
+                    auxiliar.Direccion = auxDomiNeg.ObtenerDomicilio((int)this.accesoDatos.getLector["IDDOMICILIO"]);
 
                     this.listaPersonas.Add(auxiliar);
                 }
@@ -89,11 +93,11 @@ namespace Negocio
                 {
                     domi.ModificarDomicilio(persona.Direccion);
 
-                    this.accesoDatos.SetearComando("UPDATE PERSONAS SET NOMBRE = @NOM, APELLIDO = @APE, SEXO = @SEX, FECHANAC = @FECHANAC WHERE DNI = @DNI");
-                    this.accesoDatos.SetearParametro("@NOM", persona.Nombre);
-                    this.accesoDatos.SetearParametro("@APE", persona.Apellido);
+                    this.accesoDatos.SetearComando(update);
+                    this.accesoDatos.SetearParametro("@NOMBRE", persona.Nombre);
+                    this.accesoDatos.SetearParametro("@APELLIDO", persona.Apellido);
                     this.accesoDatos.SetearParametro("@SEX", persona.Sexo);
-                    this.accesoDatos.SetearParametro("@FECHANAC", persona.FechaNacimiento);
+                    this.accesoDatos.SetearParametro("@FECHANACIMIENTO", persona.FechaNacimiento);
                     this.accesoDatos.SetearParametro("@DNI", persona.DNI);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -124,14 +128,14 @@ namespace Negocio
             {
                 domi.AgregarDomicilio(persona.Direccion);
 
-                this.accesoDatos.SetearComando("INSERT INTO PERSONAS (NOMBRE, APELLIDO, DNI, IDDOMICILIO, SEXO, FECHANAC) VALUES (@NOMBRE, @APELLIDO, @DNI, @IDDOMICILIO, @SEXO, @FECHANAC)");
+                this.accesoDatos.SetearComando(insert);
 
                 this.accesoDatos.SetearParametro("@NOMBRE", persona.Nombre);
                 this.accesoDatos.SetearParametro("@APELLIDO", persona.Apellido);
                 this.accesoDatos.SetearParametro("@DNI", persona.DNI);
-                this.accesoDatos.SetearParametro("@IDDOMICILIO", persona.Direccion.IDDomicilio);
                 this.accesoDatos.SetearParametro("@SEXO", persona.Sexo);
                 this.accesoDatos.SetearParametro("@FECHANAC", persona.FechaNacimiento);
+                this.accesoDatos.SetearParametro("@IDDOMICILIO", persona.Direccion.IDDomicilio);
 
                 this.accesoDatos.AbrirConexionEjecutarAccion();
 
@@ -155,7 +159,7 @@ namespace Negocio
 
             try
             {
-                this.accesoDatos.SetearComando("DELETE PERSONA WHERE DNI = @DNI");
+                this.accesoDatos.SetearComando(delete);
                 this.accesoDatos.SetearParametro("@DNI", persona.DNI);
 
                 this.accesoDatos.AbrirConexionEjecutarAccion();

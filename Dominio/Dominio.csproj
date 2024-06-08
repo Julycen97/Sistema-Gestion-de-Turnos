@@ -71,12 +71,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Categoria.cs" />
+    <Compile Include="Ciudad.cs" />
+    <Compile Include="Cobertura.cs" />
     <Compile Include="Domicilio.cs" />
     <Compile Include="Especialidad.cs" />
     <Compile Include="Medico.cs" />
     <Compile Include="Paciente.cs" />
     <Compile Include="Persona.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Provincia.cs" />
     <Compile Include="Turno.cs" />
   </ItemGroup>
   <ItemGroup>

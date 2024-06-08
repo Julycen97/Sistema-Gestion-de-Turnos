@@ -11,6 +11,11 @@ namespace Negocio
         private List<Domicilio> listaDomicilios;
         private AccesoDatos accesoDatos;
 
+        private const string select = "SELECT IDDOMICILIO, CALLE, ALTURA, IDCIUDAD, CODPOSTAL FROM DOMICILIOS";
+        private const string update = "UPDATE DOMICILIOS SET CALLE = @CALLE, ALTURA = @ALTURA, IDCIUDAD = @IDCIUDAD, CODPOSTAL = @CODPOSTAL WHERE IDDOMICILIO = @IDDOMICILIO";
+        private const string delete = "DELETE DOMICILIO WHERE IDDOMICILIO = @IDDOMICILIO";
+        private const string insert = "INSERT INTO DOMICILIOS (CALLE, ALTURA, IDCIUDAD, CODPOSTAL) VALUES (@CALLE, @ALTURA, @IDCIUDAD, @CODPOSTAL)";
+
         public DomicilioNegocio()
         {
             this.listaDomicilios = new List<Domicilio>();
@@ -19,20 +24,22 @@ namespace Negocio
 
         public List<Domicilio> ObtenerDomicilios()
         {
+            CiudadNegocio ciudad = new CiudadNegocio();
+
             try
             {
-                this.accesoDatos.SetearComando("SELECT IDDOMICILIO, CALLE, ALTURA, CIUDAD, PROVINCIA, CODPOSTAL FROM DOMICILIOS");
+                this.accesoDatos.SetearComando(select);
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (this.accesoDatos.getLector.Read())
                 {
                     Domicilio auxiliar = new Domicilio();
 
+                    auxiliar.Ciudad = ciudad.ObtenerCiudad((int)this.accesoDatos.getLector["IDCIUDAD"]);
+                    
                     auxiliar.IDDomicilio = this.accesoDatos.getLector["IDDOMICILIO"] is DBNull ? 0 : (int)this.accesoDatos.getLector["IDDOMICILIO"];
                     auxiliar.Calle = this.accesoDatos.getLector["CALLE"] is DBNull ? string.Empty : (string)this.accesoDatos.getLector["CALLE"];
                     auxiliar.Altura = this.accesoDatos.getLector["ALTURA"] is DBNull ? 0 : (int)this.accesoDatos.getLector["ALTURA"];
-                    auxiliar.Ciudad = this.accesoDatos.getLector["CIUDAD"] is DBNull ? string.Empty : (string)this.accesoDatos.getLector["CIUDAD"];
-                    auxiliar.Provincia = this.accesoDatos.getLector["CIUDAD"] is DBNull ? string.Empty : (string)this.accesoDatos.getLector["PROVINCIA"];
                     auxiliar.CodPostal = this.accesoDatos.getLector["CODPOSTAL"] is DBNull ? 0 : (int)this.accesoDatos.getLector["CODPOSTAL"];
 
                     this.listaDomicilios.Add(auxiliar);
@@ -78,12 +85,11 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando("UPDATE DOMICILIOS SET CALLE = @CALLE, ALTURA = @ALT, CIUDAD = @CIU, PROVINCIA = @PROV, CODPOSTAL = @COD WHERE IDDOMICILIO = @IDDOMI");
+                    this.accesoDatos.SetearComando(update);
                     this.accesoDatos.SetearParametro("@CALLE", domicilio.Calle);
-                    this.accesoDatos.SetearParametro("@ALT", domicilio.Altura);
-                    this.accesoDatos.SetearParametro("@CIU", domicilio.Ciudad);
-                    this.accesoDatos.SetearParametro("@PROV", domicilio.Provincia);
-                    this.accesoDatos.SetearParametro("@COD", domicilio.CodPostal);
+                    this.accesoDatos.SetearParametro("@ALTURA", domicilio.Altura);
+                    this.accesoDatos.SetearParametro("@IDCIUDAD", domicilio.Ciudad.IDCiudad);
+                    this.accesoDatos.SetearParametro("@CODPOSTAL", domicilio.CodPostal);
                     this.accesoDatos.SetearParametro("@IDDOMI", domicilio.IDDomicilio);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -112,7 +118,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando("DELETE DOMICILIO WHERE IDDOMICILIO = @IDDOMICILIO");
+                    this.accesoDatos.SetearComando(delete);
                     this.accesoDatos.SetearParametro("@IDDOMICILIO", IDDomicilio);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -136,11 +142,10 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando("INSERT INTO DOMICILIOS (CALLE, ALTURA, CIUDAD, PROVINCIA, CODPOSTAL) VALUES (@CALLE, @ALTURA, @CIUDAD, @PROVINCIA, @CODPOSTAL)");
+                this.accesoDatos.SetearComando(insert);
                 this.accesoDatos.SetearParametro("@CALLE", domicilio.Calle);
                 this.accesoDatos.SetearParametro("@ALTURA", domicilio.Altura);
-                this.accesoDatos.SetearParametro("@CIUDAD", domicilio.Ciudad);
-                this.accesoDatos.SetearParametro("@PROVINCIA", domicilio.Provincia);
+                this.accesoDatos.SetearParametro("@IDCIUDAD", domicilio.Ciudad.IDCiudad);
                 this.accesoDatos.SetearParametro("@CODPOSTAL", domicilio.CodPostal);
 
                 this.accesoDatos.AbrirConexionEjecutarAccion();

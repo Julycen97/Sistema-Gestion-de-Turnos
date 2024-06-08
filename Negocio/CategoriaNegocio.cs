@@ -10,6 +10,8 @@ namespace Negocio
     {
         private List<Categoria> listaCat;
         private AccesoDatos accesoDatos;
+
+        private const string select = "SELECT IDCATEGORIA, NOMBRE, DESCRIPCION FROM CATEGORIAS";
         public CategoriaNegocio()
         {
             this.listaCat = new List<Categoria>();
@@ -20,7 +22,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando("SELECT IDCATEGORIA, NOMBRE, DESCRIPCION FROM CATEGORIAS");
+                this.accesoDatos.SetearComando(select);
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (accesoDatos.getLector.Read())
