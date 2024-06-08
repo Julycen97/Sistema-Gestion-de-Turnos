@@ -19,7 +19,7 @@ namespace Negocio
             this.Comando = new SqlCommand();
 
             this.Comando.CommandType = System.Data.CommandType.Text;
-            this.Conexion.ConnectionString = "server= .\\SQLEXPRESS; database= Gestor-de-Turnos-DB; integrated security= true";
+            this.Conexion.ConnectionString = "server= .\\SQLEXPRESS; database= GESTOR_DE_TURNOS_DB; integrated security= true";
         }
 
         public SqlDataReader getLector

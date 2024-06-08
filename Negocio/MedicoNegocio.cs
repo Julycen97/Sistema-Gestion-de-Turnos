@@ -38,8 +38,8 @@ namespace Negocio
                     Persona cargaDatos = new Persona();
                     Medico auxiliar = new Medico();
 
-                    auxiliar.Area = espNeg.ObtenerEspecialidad((int)this.accesoDatos.getLector["IDESPECIALIDAD"]);
-                    cargaDatos = perNeg.ObtenerPersona((int)this.accesoDatos.getLector["IDPERSONA"]);
+                    auxiliar.Area = this.accesoDatos.getLector["IDESPECIALIDAD"] is DBNull ? new Especialidad() : espNeg.ObtenerEspecialidad((int)this.accesoDatos.getLector["IDESPECIALIDAD"]);
+                    cargaDatos = this.accesoDatos.getLector["DNIPERSONA"] is DBNull ? new Persona() : perNeg.ObtenerPersona((int)this.accesoDatos.getLector["DNIPERSONA"]);
                     
                     auxiliar.NumMatricula = this.accesoDatos.getLector["NUMMATRICULA"] is DBNull ? 0: (int)this.accesoDatos.getLector["NUMMATRICULA"];
                     auxiliar.Estado = (bool)this.accesoDatos.getLector["ESTADO"];

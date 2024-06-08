@@ -35,7 +35,7 @@ namespace Negocio
                 {
                     Domicilio auxiliar = new Domicilio();
 
-                    auxiliar.Ciudad = ciudad.ObtenerCiudad((int)this.accesoDatos.getLector["IDCIUDAD"]);
+                    auxiliar.Ciudad = this.accesoDatos.getLector["IDCIUDAD"] is DBNull ? new Ciudad() : ciudad.ObtenerCiudad((int)this.accesoDatos.getLector["IDCIUDAD"]);
                     
                     auxiliar.IDDomicilio = this.accesoDatos.getLector["IDDOMICILIO"] is DBNull ? 0 : (int)this.accesoDatos.getLector["IDDOMICILIO"];
                     auxiliar.Calle = this.accesoDatos.getLector["CALLE"] is DBNull ? string.Empty : (string)this.accesoDatos.getLector["CALLE"];

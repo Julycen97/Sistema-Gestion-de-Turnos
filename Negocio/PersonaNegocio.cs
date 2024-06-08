@@ -34,13 +34,13 @@ namespace Negocio
                     Persona auxiliar = new Persona();
                     DomicilioNegocio auxDomiNeg = new DomicilioNegocio();
 
+                    auxiliar.Direccion = this.accesoDatos.getLector["IDDOMICILIO"] is DBNull ? new Domicilio() : auxDomiNeg.ObtenerDomicilio((int)this.accesoDatos.getLector["IDDOMICILIO"]);
+
                     auxiliar.DNI = this.accesoDatos.getLector["DNI"] is DBNull ? 0 : (int)this.accesoDatos.getLector["DNI"];
                     auxiliar.Nombre = this.accesoDatos.getLector["NOMBRE"] is DBNull ? string.Empty : (string)this.accesoDatos.getLector["NOMBRE"];
                     auxiliar.Apellido = this.accesoDatos.getLector["APELLIDO"] is DBNull ? string.Empty : (string)this.accesoDatos.getLector["APELLIDO"];
                     auxiliar.Sexo = this.accesoDatos.getLector["SEXO"] is DBNull ? string.Empty : (string)this.accesoDatos.getLector["SEXO"];
                     auxiliar.FechaNacimiento = this.accesoDatos.getLector["FECHANACIMIENTO"] is DBNull ? new DateTime(1,1,1900) : (DateTime)this.accesoDatos.getLector["FECHANACIMIENTO"];
-
-                    auxiliar.Direccion = auxDomiNeg.ObtenerDomicilio((int)this.accesoDatos.getLector["IDDOMICILIO"]);
 
                     this.listaPersonas.Add(auxiliar);
                 }

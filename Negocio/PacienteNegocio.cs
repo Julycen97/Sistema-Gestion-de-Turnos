@@ -40,8 +40,8 @@ namespace Negocio
                     Paciente auxiliar = new Paciente();
                     Persona cargaDatos = new Persona();
 
-                    cargaDatos = persona.ObtenerPersona((int)this.accesoDatos.getLector["DNIPERSONA"]);
-                    auxiliar.Cobertura = cobertura.ObtenerCobertura((int)this.accesoDatos.getLector["IDCOBERTURA"]);
+                    cargaDatos = this.accesoDatos.getLector["DNIPERSONA"] is DBNull ? new Persona() : persona.ObtenerPersona((int)this.accesoDatos.getLector["DNIPERSONA"]);
+                    auxiliar.Cobertura = this.accesoDatos.getLector["IDCOBERTURA"] is DBNull ? new Cobertura() : cobertura.ObtenerCobertura((int)this.accesoDatos.getLector["IDCOBERTURA"]);
 
                     auxiliar.NumPaciente = this.accesoDatos.getLector["NUMPACIENTE"] is DBNull ? 0 : (int)this.accesoDatos.getLector["NUMPACIENTE"];
                     auxiliar.FechaAfiliacion = this.accesoDatos.getLector["FECHAAFILIACION"] is DBNull ? new DateTime(1, 1, 1900) : (DateTime)this.accesoDatos.getLector["FECHAAFILIACION"];
