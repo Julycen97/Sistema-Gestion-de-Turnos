@@ -29,10 +29,11 @@
 
         <div>
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+
             </asp:ContentPlaceHolder>
         </div>
 
-        <footer>
+        <footer id="Footer">
             <div class="row">
                 <p>&copy; <%: DateTime.Now.Year %> - Todos los derechos reservados.</p>
             </div>

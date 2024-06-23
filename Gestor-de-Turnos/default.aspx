@@ -4,5 +4,35 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-    <asp:Calendar ID="Calendar1" runat="server"></asp:Calendar>
+    <div>
+        <!-- IMAGEN DEL LUGAR, NO TAN GRANDE -->
+        <figure></figure>
+
+        <!-- BREVE DESCRIPCIÓN DEL LUGAR -->
+        <figcaption></figcaption>
+
+        <!-- DEL LADO DERECHO UNA IMAGEN DE MEDIO O ESTUDIO -->
+        <aside>
+            <image></image>
+        </aside>
+
+        <!-- DEL LADO IZQUIERDO DESCRIPCIÓN -->
+        <div>
+            <p></p>
+        </div>
+
+        <!-- CARROUSEL DE IMAGENES DEL LUGAR Y EQUIPAMIENTO PARA ESTUDIOS -->
+        <div>
+
+        </div>
+
+        <!-- COBERTURAS CON ICONO O LOGO CON NOMBRE -->
+        <asp:GridView></asp:GridView>
+
+        <!-- MAPA CON SUCURSALES, CONSULTORIOS EXTERNOS, ETC -->
+        <div>
+
+        </div>
+    </div>
+    
 </asp:Content>
