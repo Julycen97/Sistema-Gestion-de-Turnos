@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="default.aspx" />
+    <Content Include="Estilos\Styles.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
