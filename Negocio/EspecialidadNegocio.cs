@@ -24,7 +24,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(query.getSelect());
+                this.accesoDatos.SetearComando(this.query.getSelect());
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (accesoDatos.getLector.Read())
@@ -83,7 +83,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(query.getInsert());
+                this.accesoDatos.SetearComando(this.query.getInsert());
                 this.accesoDatos.SetearParametro("@NOMBRE", especialidad.Nombre);
                 this.accesoDatos.SetearParametro("@RAMA", especialidad.Rama);
 
@@ -105,7 +105,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(query.getDelete());
+                this.accesoDatos.SetearComando(this.query.getDelete());
                 this.accesoDatos.SetearParametro("@IDESPECIALIDAD", IDEspecialidad);
 
                 this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -126,7 +126,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(query.getUpdate());
+                this.accesoDatos.SetearComando(this.query.getUpdate());
                 this.accesoDatos.SetearParametro("@NOMBRE", nombre);
                 this.accesoDatos.SetearParametro("@RAMA", rama);
 

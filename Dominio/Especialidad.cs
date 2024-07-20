@@ -32,6 +32,7 @@ namespace Dominio
 
             retorno.Append("Especialidad: " + this.Nombre + "\n");
             retorno.Append("Rama:         " + this.Rama + "\n");
+
             return retorno.ToString();
         }
     }

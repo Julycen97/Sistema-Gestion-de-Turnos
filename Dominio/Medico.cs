@@ -45,7 +45,7 @@ namespace Dominio
             //CHUSMEAR
             retorno.Append(base.ToString());
 
-            return base.ToString();
+            return retorno.ToString();
         }
     }
 }

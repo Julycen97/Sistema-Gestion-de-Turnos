@@ -19,11 +19,11 @@ namespace Dominio
             this.FechaNacimiento = new DateTime(1,1,1900);
         }
 
-        public Persona(string Nombre, string Apellido, int DNi, Domicilio Direccion, string Sexo, DateTime FechaNacimiento)
+        public Persona(string Nombre, string Apellido, int DNI, Domicilio Direccion, string Sexo, DateTime FechaNacimiento)
         {
             this.Nombre = Nombre;
             this.Apellido = Apellido;
-            this.DNI = DNi;
+            this.DNI = DNI;
             this.Direccion = Direccion;
             this.Sexo = Sexo;
             this.FechaNacimiento = FechaNacimiento;

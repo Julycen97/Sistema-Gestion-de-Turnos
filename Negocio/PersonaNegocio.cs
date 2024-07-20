@@ -25,7 +25,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(query.getSelect());
+                this.accesoDatos.SetearComando(this.query.getSelect());
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (accesoDatos.getLector.Read())
@@ -92,7 +92,7 @@ namespace Negocio
                 {
                     domi.ModificarDomicilio(persona.Direccion);
 
-                    this.accesoDatos.SetearComando(query.getUpdate());
+                    this.accesoDatos.SetearComando(this.query.getUpdate());
                     this.accesoDatos.SetearParametro("@NOMBRE", persona.Nombre);
                     this.accesoDatos.SetearParametro("@APELLIDO", persona.Apellido);
                     this.accesoDatos.SetearParametro("@SEX", persona.Sexo);
@@ -127,7 +127,7 @@ namespace Negocio
             {
                 domi.AgregarDomicilio(persona.Direccion);
 
-                this.accesoDatos.SetearComando(query.getInsert());
+                this.accesoDatos.SetearComando(this.query.getInsert());
 
                 this.accesoDatos.SetearParametro("@NOMBRE", persona.Nombre);
                 this.accesoDatos.SetearParametro("@APELLIDO", persona.Apellido);
@@ -158,7 +158,7 @@ namespace Negocio
 
             try
             {
-                this.accesoDatos.SetearComando(query.getDelete());
+                this.accesoDatos.SetearComando(this.query.getDelete());
                 this.accesoDatos.SetearParametro("@DNI", persona.DNI);
 
                 this.accesoDatos.AbrirConexionEjecutarAccion();

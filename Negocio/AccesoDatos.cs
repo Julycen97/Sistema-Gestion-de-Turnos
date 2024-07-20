@@ -19,12 +19,12 @@ namespace Negocio
             this.Comando = new SqlCommand();
 
             this.Comando.CommandType = System.Data.CommandType.Text;
-            this.Conexion.ConnectionString = "server= .\\SQLEXPRESS; database= GESTOR_DE_TURNOS_DB; integrated security= true";
+            this.Conexion.ConnectionString = "server= .\\SQLEXPRESS; database= GESTOR_DE_TURNOS; integrated security= true";
         }
 
         public SqlDataReader getLector
         {
-            get { return Lector; }
+            get { return this.Lector; }
         }
 
         public void SetearComando(string Comando)
@@ -44,14 +44,14 @@ namespace Negocio
                 this.Comando.Connection = this.Conexion;
                 this.Conexion.Open();
 
-                Lector = this.Comando.ExecuteReader();
+                this.Lector = this.Comando.ExecuteReader();
             }
             catch (Exception ex)
             {
                 throw ex;
             }
 
-            return Lector;
+            return this.Lector;
         }
 
         public void AbrirConexionEjecutarAccion()
@@ -71,12 +71,12 @@ namespace Negocio
 
         public void CerrarConexion()
         {
-            if (Lector != null)
+            if (this.Lector != null)
             {
-                Lector.Close();
+                this.Lector.Close();
             }
 
-            Conexion.Close();
+            this.Conexion.Close();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace Negocio
 
             try
             {
-                this.accesoDatos.SetearComando(query.getSelect());
+                this.accesoDatos.SetearComando(this.query.getSelect());
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (this.accesoDatos.getLector.Read())
@@ -103,7 +103,7 @@ namespace Negocio
 
                     persona.ModificarPersona(auxiliar);
 
-                    this.accesoDatos.SetearComando(query.getUpdate());
+                    this.accesoDatos.SetearComando(this.query.getUpdate());
                     this.accesoDatos.SetearParametro("@IDESPECIALIDAD", medico.Area.IDEspecialidad);
                     this.accesoDatos.SetearParametro("@NUMMATRICULA", medico.NumMatricula);
 
@@ -133,7 +133,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando(query.getDelete());
+                    this.accesoDatos.SetearComando(this.query.getDelete());
                     this.accesoDatos.SetearParametro("@NUMMATRICULA", medico.NumMatricula);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -165,7 +165,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando(query.getSetStatus());
+                    this.accesoDatos.SetearComando(this.query.getSetStatus());
                     this.accesoDatos.SetearParametro("@NUMMATRICULA", medico.NumMatricula);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -201,7 +201,7 @@ namespace Negocio
 
                 persona.AgregarPersona(auxiliar);
 
-                this.accesoDatos.SetearComando(query.getInsert());
+                this.accesoDatos.SetearComando(this.query.getInsert());
                 this.accesoDatos.SetearParametro("@NUMMATRICULA", medico.NumMatricula);
                 this.accesoDatos.SetearParametro("@DNIPERSONA", auxiliar.DNI);
                 this.accesoDatos.SetearParametro("@IDESPECIALIDAD", medico.Area.IDEspecialidad);

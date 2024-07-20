@@ -29,7 +29,7 @@ namespace Negocio
 
             try
             {
-                this.accesoDatos.SetearComando(query.getSelect());
+                this.accesoDatos.SetearComando(this.query.getSelect());
 
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
@@ -109,7 +109,7 @@ namespace Negocio
 
                     persona.ModificarPersona(auxiliar);
 
-                    this.accesoDatos.SetearComando(query.getUpdate());
+                    this.accesoDatos.SetearComando(this.query.getUpdate());
                     this.accesoDatos.SetearParametro("@FECHAAFILIACION", paciente.FechaAfiliacion);
                     this.accesoDatos.SetearParametro("@IDCOBERTURA", paciente.Cobertura.IDCobertura);
                     this.accesoDatos.SetearParametro("@NUMPACIENTE", paciente.NumPaciente);
@@ -140,7 +140,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando(query.getDelete());
+                    this.accesoDatos.SetearComando(this.query.getDelete());
                     this.accesoDatos.SetearParametro("@NUMPACIENTE", paciente.NumPaciente);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -182,7 +182,7 @@ namespace Negocio
 
                 persona.AgregarPersona(auxiliar);
 
-                this.accesoDatos.SetearComando(query.getInsert());
+                this.accesoDatos.SetearComando(this.query.getInsert());
                 this.accesoDatos.SetearParametro("@IDPERSONA", paciente.DNI);
                 this.accesoDatos.SetearParametro("@FECHAAFILIACION", paciente.FechaAfiliacion);
                 this.accesoDatos.SetearParametro("@IDCOBERTURA", paciente.Cobertura.IDCobertura);

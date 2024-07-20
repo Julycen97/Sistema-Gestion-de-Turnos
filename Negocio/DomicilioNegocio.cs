@@ -26,7 +26,7 @@ namespace Negocio
 
             try
             {
-                this.accesoDatos.SetearComando(query.getSelect());
+                this.accesoDatos.SetearComando(this.query.getSelect());
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (this.accesoDatos.getLector.Read())
@@ -83,7 +83,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando(query.getUpdate());
+                    this.accesoDatos.SetearComando(this.query.getUpdate());
                     this.accesoDatos.SetearParametro("@CALLE", domicilio.Calle);
                     this.accesoDatos.SetearParametro("@ALTURA", domicilio.Altura);
                     this.accesoDatos.SetearParametro("@IDCIUDAD", domicilio.Ciudad.IDCiudad);
@@ -116,7 +116,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando(query.getDelete());
+                    this.accesoDatos.SetearComando(this.query.getDelete());
                     this.accesoDatos.SetearParametro("@IDDOMICILIO", IDDomicilio);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -140,7 +140,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(query.getInsert());
+                this.accesoDatos.SetearComando(this.query.getInsert());
                 this.accesoDatos.SetearParametro("@CALLE", domicilio.Calle);
                 this.accesoDatos.SetearParametro("@ALTURA", domicilio.Altura);
                 this.accesoDatos.SetearParametro("@IDCIUDAD", domicilio.Ciudad.IDCiudad);
