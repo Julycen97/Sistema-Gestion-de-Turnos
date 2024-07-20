@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using Negocio.Querys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,13 @@ namespace Negocio
 {
     public class CategoriaNegocio
     {
+        private QuerysCategorias query;
         private List<Categoria> listaCat;
         private AccesoDatos accesoDatos;
 
-        private const string select = "SELECT IDCATEGORIA, NOMBRE, DESCRIPCION FROM CATEGORIAS";
         public CategoriaNegocio()
         {
+            this.query = new QuerysCategorias();
             this.listaCat = new List<Categoria>();
             this.accesoDatos = new AccesoDatos();
         }
@@ -22,7 +24,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(select);
+                this.accesoDatos.SetearComando(query.getSelect());
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (accesoDatos.getLector.Read())

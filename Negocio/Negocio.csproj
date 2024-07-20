@@ -81,6 +81,16 @@
     <Compile Include="PersonaNegocio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvinciaNegocio.cs" />
+    <Compile Include="Querys\QuerysCategorias.cs" />
+    <Compile Include="Querys\QuerysCiudad.cs" />
+    <Compile Include="Querys\QuerysCobertura.cs" />
+    <Compile Include="Querys\QuerysDomicilio.cs" />
+    <Compile Include="Querys\QuerysEspecialidad.cs" />
+    <Compile Include="Querys\QuerysMedico.cs" />
+    <Compile Include="Querys\QuerysPaciente.cs" />
+    <Compile Include="Querys\QuerysPersona.cs" />
+    <Compile Include="Querys\QuerysProvincia.cs" />
+    <Compile Include="Querys\QuerysTurno.cs" />
     <Compile Include="TurnoNegocio.cs" />
   </ItemGroup>
   <ItemGroup>

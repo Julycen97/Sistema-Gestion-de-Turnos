@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using Negocio.Querys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +9,13 @@ namespace Negocio
 {
     public class DomicilioNegocio
     {
+        private QuerysDomicilio query;
         private List<Domicilio> listaDomicilios;
         private AccesoDatos accesoDatos;
 
-        private const string select = "SELECT IDDOMICILIO, CALLE, ALTURA, IDCIUDAD, CODPOSTAL FROM DOMICILIOS";
-        private const string update = "UPDATE DOMICILIOS SET CALLE = @CALLE, ALTURA = @ALTURA, IDCIUDAD = @IDCIUDAD, CODPOSTAL = @CODPOSTAL WHERE IDDOMICILIO = @IDDOMICILIO";
-        private const string delete = "DELETE DOMICILIO WHERE IDDOMICILIO = @IDDOMICILIO";
-        private const string insert = "INSERT INTO DOMICILIOS (CALLE, ALTURA, IDCIUDAD, CODPOSTAL) VALUES (@CALLE, @ALTURA, @IDCIUDAD, @CODPOSTAL)";
-
         public DomicilioNegocio()
         {
+            this.query = new QuerysDomicilio();
             this.listaDomicilios = new List<Domicilio>();
             this.accesoDatos = new AccesoDatos();
         }
@@ -28,7 +26,7 @@ namespace Negocio
 
             try
             {
-                this.accesoDatos.SetearComando(select);
+                this.accesoDatos.SetearComando(query.getSelect());
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (this.accesoDatos.getLector.Read())
@@ -85,7 +83,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando(update);
+                    this.accesoDatos.SetearComando(query.getUpdate());
                     this.accesoDatos.SetearParametro("@CALLE", domicilio.Calle);
                     this.accesoDatos.SetearParametro("@ALTURA", domicilio.Altura);
                     this.accesoDatos.SetearParametro("@IDCIUDAD", domicilio.Ciudad.IDCiudad);
@@ -118,7 +116,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando(delete);
+                    this.accesoDatos.SetearComando(query.getDelete());
                     this.accesoDatos.SetearParametro("@IDDOMICILIO", IDDomicilio);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -142,7 +140,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(insert);
+                this.accesoDatos.SetearComando(query.getInsert());
                 this.accesoDatos.SetearParametro("@CALLE", domicilio.Calle);
                 this.accesoDatos.SetearParametro("@ALTURA", domicilio.Altura);
                 this.accesoDatos.SetearParametro("@IDCIUDAD", domicilio.Ciudad.IDCiudad);

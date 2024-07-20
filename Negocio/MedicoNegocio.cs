@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using Negocio.Querys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +9,13 @@ namespace Negocio
 {
     public class MedicoNegocio
     {
+        private QuerysMedico query;
         private List<Medico> listaMedicos;
         private AccesoDatos accesoDatos;
 
-        private const string select = "SELECT NUMMATRICULA, DNIPERSONA, IDESPECIALIDAD, ESTADO FROM MEDICOS";
-        private const string update = "UPDATE MEDICOS SET IDESPECIALIDAD = @IDESPECIALIDAD WHERE NUMMATRICULA = @NUMMATRICULA";
-        private const string setStatus = "UPDATE MEDICOS SET ESTADO = 0 WHERE NUMMATRICULA = @NUMMATRICULA";
-        private const string delete = "DELETE MEDICOS WHERE NUMMATRICULA = @NUMMATRICULA";
-        private const string insert = "INSERT INTO MEDICOS (NUMMATRICULA, DNIPERSONA, IDESPECIALIDAD, ESTADO) VALUES (@NUMMATRICULA, @DNIPERSONA, @IDESPECIALIDAD, @ESTADO)";
-
         public MedicoNegocio() 
         {
+            this.query = new QuerysMedico();
             this.listaMedicos = new List<Medico>();
             this.accesoDatos = new AccesoDatos();
         }
@@ -30,7 +27,7 @@ namespace Negocio
 
             try
             {
-                this.accesoDatos.SetearComando(select);
+                this.accesoDatos.SetearComando(query.getSelect());
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (this.accesoDatos.getLector.Read())
@@ -106,7 +103,7 @@ namespace Negocio
 
                     persona.ModificarPersona(auxiliar);
 
-                    this.accesoDatos.SetearComando(update);
+                    this.accesoDatos.SetearComando(query.getUpdate());
                     this.accesoDatos.SetearParametro("@IDESPECIALIDAD", medico.Area.IDEspecialidad);
                     this.accesoDatos.SetearParametro("@NUMMATRICULA", medico.NumMatricula);
 
@@ -136,7 +133,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando(delete);
+                    this.accesoDatos.SetearComando(query.getDelete());
                     this.accesoDatos.SetearParametro("@NUMMATRICULA", medico.NumMatricula);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -168,7 +165,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando(setStatus);
+                    this.accesoDatos.SetearComando(query.getSetStatus());
                     this.accesoDatos.SetearParametro("@NUMMATRICULA", medico.NumMatricula);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -204,7 +201,7 @@ namespace Negocio
 
                 persona.AgregarPersona(auxiliar);
 
-                this.accesoDatos.SetearComando(insert);
+                this.accesoDatos.SetearComando(query.getInsert());
                 this.accesoDatos.SetearParametro("@NUMMATRICULA", medico.NumMatricula);
                 this.accesoDatos.SetearParametro("@DNIPERSONA", auxiliar.DNI);
                 this.accesoDatos.SetearParametro("@IDESPECIALIDAD", medico.Area.IDEspecialidad);

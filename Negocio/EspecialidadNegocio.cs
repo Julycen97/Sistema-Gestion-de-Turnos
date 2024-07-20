@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using Negocio.Querys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +9,13 @@ namespace Negocio
 {
     public class EspecialidadNegocio
     {
+        private QuerysEspecialidad query;
         private List<Especialidad> listaEspecial;
         private AccesoDatos accesoDatos;
 
-        private const string select = "SELECT IDESPECIALIDAD, NOMBRE, RAMA FROM ESPECIALIDADES";
-        private const string insert = "INSERT INTO ESPECIALIDADES (NOMBRE, RAMA) VALUES (@NOMBRE, @RAMA)";
-        private const string update = "UPDATE ESPECIALIDADES SET NOMBRE = @NOMBRE, RAMA = @RAMA WHERE IDESPECIALIDAD = @IDESPECIALIDAD";
-        private const string delete = "DELETE ESPECIALIDADES WHERE IDESPECIALIDAD = @IDESPECIALIDAD";
-
         public EspecialidadNegocio()
         {
+            this.query = new QuerysEspecialidad();
             this.listaEspecial = new List<Especialidad>();
             this.accesoDatos = new AccesoDatos();
         }
@@ -26,7 +24,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(select);
+                this.accesoDatos.SetearComando(query.getSelect());
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (accesoDatos.getLector.Read())
@@ -85,7 +83,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(insert);
+                this.accesoDatos.SetearComando(query.getInsert());
                 this.accesoDatos.SetearParametro("@NOMBRE", especialidad.Nombre);
                 this.accesoDatos.SetearParametro("@RAMA", especialidad.Rama);
 
@@ -107,8 +105,30 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(delete);
+                this.accesoDatos.SetearComando(query.getDelete());
                 this.accesoDatos.SetearParametro("@IDESPECIALIDAD", IDEspecialidad);
+
+                this.accesoDatos.AbrirConexionEjecutarAccion();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                this.accesoDatos.CerrarConexion();
+            }
+        }
+
+        public bool ModificarEspecialidad(string nombre, string rama)
+        {
+            try
+            {
+                this.accesoDatos.SetearComando(query.getUpdate());
+                this.accesoDatos.SetearParametro("@NOMBRE", nombre);
+                this.accesoDatos.SetearParametro("@RAMA", rama);
 
                 this.accesoDatos.AbrirConexionEjecutarAccion();
 

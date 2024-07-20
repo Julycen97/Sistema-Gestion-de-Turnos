@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using Negocio.Querys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +9,14 @@ namespace Negocio
 {
     public class PersonaNegocio
     {
+        QuerysPersona query;
         private List<Persona> listaPersonas;
         private AccesoDatos accesoDatos;
 
-        private const string select = "SELECT DNI, NOMBRE, APELLIDO, SEXO, FECHANACIMIENTO, IDDOMICILIO FROM PERSONAS";
-        private const string update = "UPDATE PERSONAS SET NOMBRE = @NOMBRE, APELLIDO = @APELLIDO, SEXO = @SEXO, FECHANACIMIENTO = @FECHANACIMIENTO WHERE DNI = @DNI";
-        private const string insert = "INSERT INTO PERSONAS (DNI, NOMBRE, APELLIDO, SEXO, FECHANACIMIENTO, IDDOMICILIO) VALUES (@DNI, @NOMBRE, @APELLIDO, @SEXO, @FECHANACIMIENTO, @IDDOMICILIO)";
-        private const string delete = "DELETE PERSONA WHERE DNI = @DNI";
 
         public PersonaNegocio()
         {
+            this.query = new QuerysPersona();
             this.listaPersonas = new List<Persona>();
             this.accesoDatos = new AccesoDatos();
         }
@@ -26,7 +25,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(select);
+                this.accesoDatos.SetearComando(query.getSelect());
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (accesoDatos.getLector.Read())
@@ -93,7 +92,7 @@ namespace Negocio
                 {
                     domi.ModificarDomicilio(persona.Direccion);
 
-                    this.accesoDatos.SetearComando(update);
+                    this.accesoDatos.SetearComando(query.getUpdate());
                     this.accesoDatos.SetearParametro("@NOMBRE", persona.Nombre);
                     this.accesoDatos.SetearParametro("@APELLIDO", persona.Apellido);
                     this.accesoDatos.SetearParametro("@SEX", persona.Sexo);
@@ -128,7 +127,7 @@ namespace Negocio
             {
                 domi.AgregarDomicilio(persona.Direccion);
 
-                this.accesoDatos.SetearComando(insert);
+                this.accesoDatos.SetearComando(query.getInsert());
 
                 this.accesoDatos.SetearParametro("@NOMBRE", persona.Nombre);
                 this.accesoDatos.SetearParametro("@APELLIDO", persona.Apellido);
@@ -159,7 +158,7 @@ namespace Negocio
 
             try
             {
-                this.accesoDatos.SetearComando(delete);
+                this.accesoDatos.SetearComando(query.getDelete());
                 this.accesoDatos.SetearParametro("@DNI", persona.DNI);
 
                 this.accesoDatos.AbrirConexionEjecutarAccion();

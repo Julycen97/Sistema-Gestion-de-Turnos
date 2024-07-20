@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using Negocio.Querys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,16 +11,13 @@ namespace Negocio
 {
     public class PacienteNegocio
     {
+        private QuerysPaciente query;
         private List<Paciente> listaPacientes;
         private AccesoDatos accesoDatos;
 
-        private const string select = "SELECT NUMPACIENTE, DNIPERSONA, FECHAAFILIACION, IDCOBERTURA FROM PACIENTES";
-        private const string update = "UPDATE PACIENTES SET FECHAAFILIACION = @FECHAAFILIACION, IDCOBERTURA = @IDCOBERTURA WHERE NUMPACIENTE = @NUMPACIENTE";
-        private const string delete = "DELETE PACIENTES WHERE NUMPACIENTE = @NUMPACIENTE";
-        private const string insert = "INSERT INTO PACIENTES (DNIPERSONA, FECHAAFILIACION, IDCOBERTURA) VALUES (@DNIPERSONA, @FECHAAFILIACION, @IDCOBERTURA)";
-
         public PacienteNegocio()
         {
+            this.query = new QuerysPaciente();
             this.listaPacientes = new List<Paciente>();
             this.accesoDatos = new AccesoDatos();
         }
@@ -31,7 +29,7 @@ namespace Negocio
 
             try
             {
-                this.accesoDatos.SetearComando(select);
+                this.accesoDatos.SetearComando(query.getSelect());
 
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
@@ -111,7 +109,7 @@ namespace Negocio
 
                     persona.ModificarPersona(auxiliar);
 
-                    this.accesoDatos.SetearComando(update);
+                    this.accesoDatos.SetearComando(query.getUpdate());
                     this.accesoDatos.SetearParametro("@FECHAAFILIACION", paciente.FechaAfiliacion);
                     this.accesoDatos.SetearParametro("@IDCOBERTURA", paciente.Cobertura.IDCobertura);
                     this.accesoDatos.SetearParametro("@NUMPACIENTE", paciente.NumPaciente);
@@ -142,7 +140,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando(delete);
+                    this.accesoDatos.SetearComando(query.getDelete());
                     this.accesoDatos.SetearParametro("@NUMPACIENTE", paciente.NumPaciente);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -184,7 +182,7 @@ namespace Negocio
 
                 persona.AgregarPersona(auxiliar);
 
-                this.accesoDatos.SetearComando(insert);
+                this.accesoDatos.SetearComando(query.getInsert());
                 this.accesoDatos.SetearParametro("@IDPERSONA", paciente.DNI);
                 this.accesoDatos.SetearParametro("@FECHAAFILIACION", paciente.FechaAfiliacion);
                 this.accesoDatos.SetearParametro("@IDCOBERTURA", paciente.Cobertura.IDCobertura);

@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using Negocio.Querys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,25 +9,22 @@ namespace Negocio
 {
     public class TurnoNegocio
     {
+        private QuerysTurno query;
         private List<Turno> listaTurnos;
         private AccesoDatos accesoDatos;
 
-        private const string select = "SELECT IDTURNO, NUMPACIENTE, MATRICULAMEDICO, IDCATTURNO, IDESPECIALIDAD, FECHAHORATURNO FROM TURNOS";
-        private const string update = "UPDATE TURNOS SET MATRICULAMEDICO = @MATRICULAMEDICO, IDCATTURNO = @IDCATTURNO, FECHAHORATURNO = @FECHAHORATURNO WHERE IDTURNO = @IDTURNO";
-        private const string delete = "DELETE TURNOS WHERE IDTURNO = @IDTURNO";
-        private const string insert = "INSERT INTO TURNOS (NUMPACIENTE, MATRICULAMEDICO, IDCATTURNO, IDESPECIALIDAD, FECHAHORATURNO) VALUES (@NUMPACIENTE, @MATRICULAMEDICO, @IDCATTURNO, @IDESPECIALIDAD, @FECHAHORATURNO)";
-
         public TurnoNegocio()
         {
-            listaTurnos = new List<Turno>();
-            accesoDatos = new AccesoDatos();
+            this.query = new QuerysTurno();
+            this.listaTurnos = new List<Turno>();
+            this.accesoDatos = new AccesoDatos();
         }
 
         public List<Turno> ObtenerTurnos()
         {
             try
             {
-                this.accesoDatos.SetearComando(select);
+                this.accesoDatos.SetearComando(query.getSelect());
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (this.accesoDatos.getLector.Read())
@@ -91,7 +89,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando(update);
+                    this.accesoDatos.SetearComando(query.getUpdate());
                     this.accesoDatos.SetearParametro("@MATRICULAMEDICO", turno.Doctor.NumMatricula);
                     this.accesoDatos.SetearParametro("@IDCATTURNO", turno.CatTurno.IDCategoria);
                     this.accesoDatos.SetearParametro("@FECHAHORATURNO", turno.FechaHoraTurno);
@@ -121,7 +119,7 @@ namespace Negocio
             {
                 try
                 {
-                    this.accesoDatos.SetearComando(delete);
+                    this.accesoDatos.SetearComando(query.getDelete());
                     this.accesoDatos.SetearParametro("@IDTURNO", turno.IDTurno);
 
                     this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -145,7 +143,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(insert);
+                this.accesoDatos.SetearComando(query.getInsert());
                 this.accesoDatos.SetearParametro("@NUMPACIENTE", turno.Datos.NumPaciente);
                 this.accesoDatos.SetearParametro("@MATRICULAMEDICO", turno.Doctor.NumMatricula);
                 this.accesoDatos.SetearParametro("@IDCATTURNO", turno.CatTurno.IDCategoria);

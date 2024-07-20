@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using Negocio.Querys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +9,13 @@ namespace Negocio
 {
     public class CoberturaNegocio
     {
+        private QuerysCobertura query;
         private AccesoDatos accesoDatos;
         private List<Cobertura> listaCoberturas;
-        private const string select = "SELECT IDCOBERTURA, NOMBRE FROM COBERTURAS";
-        private const string insert = "INSERT INTO COBERTURAS (NOMBRE) VALUES (@NOMBRE)";
-        private const string delete = "DELETE FROM COBERTURAS WHERE IDCOBERTURA = @IDCOBERTURA";
 
         public CoberturaNegocio()
         {
+            this.query = new QuerysCobertura();
             this.accesoDatos = new AccesoDatos();
             this.listaCoberturas = new List<Cobertura>();
         }
@@ -24,7 +24,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(select);
+                this.accesoDatos.SetearComando(query.getSelect());
                 this.accesoDatos.AbrirConexionEjecutarConsulta();
 
                 while (accesoDatos.getLector.Read())
@@ -82,7 +82,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(insert);
+                this.accesoDatos.SetearComando(query.getInsert());
                 this.accesoDatos.SetearParametro("@NOMBRE", Nombre);
 
                 this.accesoDatos.AbrirConexionEjecutarAccion();
@@ -103,7 +103,7 @@ namespace Negocio
         {
             try
             {
-                this.accesoDatos.SetearComando(delete);
+                this.accesoDatos.SetearComando(query.getDelete());
                 this.accesoDatos.SetearParametro("@IDCOBERTURA", IDCobertura);
 
                 this.accesoDatos.AbrirConexionEjecutarAccion();
