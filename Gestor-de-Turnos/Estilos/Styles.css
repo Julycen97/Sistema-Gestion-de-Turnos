@@ -8,8 +8,42 @@
 
 section {
     margin: 2rem 0;
-    background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 1rem;
-    border-radius: 5px;
+    border-radius: 15px;
+    background-color: azure;
+}
+
+img{
+    width: 800px;
+    border-radius: 15px;
+}
+
+aside img {
+    width: 300px;
+    border-radius: 15px;
+}
+
+.Default{
+    display: flex;
+    padding: 10px;
+    border-radius: 15px;
+    justify-content: center;
+    background-color: azure;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#IMGInicio-A, #TXT-IMGInicio-A{
+    display: flex;
+    justify-content: center;
+}
+
+##IMGInicio-B {
+    display: flex;
+    justify-content: flex-start;
+}
+
+#TXT-IMGInicio-B{
+    display: inline-block;
+    vertical-align: top;
 }
